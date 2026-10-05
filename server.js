@@ -120,6 +120,34 @@ app.put('/api/users/:id', async (req, res) => {
   res.json(user);
 });
 
+// Get ALL users (admin)
+app.get('/api/users', async (req, res) => {
+  const users = await User.find().select('-password').sort({ createdAt: -1 });
+  res.json(users);
+});
+
+// Delete user + cascade delete everything related
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findById(id);
+    if (!user) return res.json({ success: false, message: 'User not found' });
+
+    // Cascade: delete everything owned by this user
+    await Promise.all([
+      Design.deleteMany({ designerId: id }),
+      Booking.deleteMany({ $or: [{ customerId: id }, { designerId: id }] }),
+      Review.deleteMany({ $or: [{ customerId: id }, { designerId: id }] }),
+      Notification.deleteMany({ userId: id })
+    ]);
+
+    await User.findByIdAndDelete(id);
+    res.json({ success: true, message: `Deleted ${user.name} and all related data` });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
 // ---------------- DESIGNS ----------------
 app.get('/api/designs', async (req, res) => {
   const designs = await Design.find().sort({ createdAt: -1 });
@@ -210,6 +238,10 @@ app.get('/api/reviews/designer/:id', async (req, res) => {
 });
 app.get('/api/reviews', async (req, res) => {
   res.json(await Review.find().sort({ createdAt: -1 }));
+});
+app.delete('/api/reviews/:id', async (req, res) => {
+  await Review.findByIdAndDelete(req.params.id);
+  res.json({ success: true });
 });
 
 // ---------------- START ----------------
