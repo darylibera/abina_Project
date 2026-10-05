@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register — Abina</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav><div class="logo">ABINA</div><ul><li><a href="index.html">Home</a></li><li><a href="login.html">Login</a></li></ul></nav>
+
+<section class="section">
+  <h2>Create Account</h2>
+  <form id="regForm" class="form">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required minlength="4">
+    <select name="role" id="roleSelect" required>
+      <option value="customer">I am a Customer</option>
+      <option value="designer">I am an Interior Designer</option>
+    </select>
+
+    <div id="designerFields" style="display:none">
+      <label style="display:block;margin-top:12px;font-size:14px;color:#444">Specialty</label>
+      <input type="text" name="specialty" placeholder="e.g. Modern Living Rooms">
+      <label style="display:block;margin-top:12px;font-size:14px;color:#444">Short Bio</label>
+      <textarea name="bio" placeholder="Tell customers about yourself..."></textarea>
+    </div>
+
+    <button type="submit" class="btn">Register</button>
+    <p id="regStatus"></p>
+    <p style="font-size:14px;color:#666">Already have an account? <a href="login.html" style="color:#1f3a2e">Login here</a></p>
+  </form>
+</section>
+
+<footer><p>© 2026 Abina Interior Design Studio</p></footer>
+
+<script>
+document.getElementById('roleSelect').addEventListener('change', (e) => {
+  document.getElementById('designerFields').style.display = e.target.value === 'designer' ? 'block' : 'none';
+});
+
+document.getElementById('regForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = e.target;
+  const body = {
+    name: f.name.value, email: f.email.value, password: f.password.value,
+    role: f.role.value, specialty: f.specialty?.value || '', bio: f.bio?.value || ''
+  };
+  const res = await fetch('/api/register', {
+    method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  const status = document.getElementById('regStatus');
+  if (data.success) {
+    status.className = 'alert alert-success';
+    status.textContent = '✅ Registered! Redirecting to login...';
+    setTimeout(() => location.href = 'login.html', 1200);
+  } else {
+    status.className = 'alert alert-error';
+    status.textContent = '❌ ' + data.message;
+  }
+});
+</script>
+</body>
+</html>

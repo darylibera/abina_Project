@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Designer — Abina</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <div class="logo">ABINA</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Portfolio</a></li>
+    <li><a href="designers.html">Designers</a></li>
+    <li id="authLinks"></li>
+  </ul>
+</nav>
+
+<section class="section" id="profileSection">
+  <p>Loading designer profile...</p>
+</section>
+
+<section class="section" id="bookingSection" style="display:none">
+  <h2>Book This Designer</h2>
+  <form id="bookingForm" class="form">
+    <label>Select Package</label>
+    <select name="packageName" id="packageSelect" required></select>
+    <label>Preferred Date</label>
+    <input type="date" name="date" required>
+    <label>Preferred Time</label>
+    <input type="time" name="time" required>
+    <label>Your Address</label>
+    <input type="text" name="address" placeholder="Where should the designer visit?" required>
+    <label>Additional Notes</label>
+    <textarea name="notes" placeholder="Tell us about your project..."></textarea>
+    <button type="submit" class="btn">Send Booking Request</button>
+    <p id="bookStatus"></p>
+  </form>
+</section>
+
+<section class="section" id="reviewsSection" style="display:none">
+  <h2>Reviews</h2>
+  <div id="reviewsList"></div>
+</section>
+
+<footer><p>© 2026 Abina Interior Design Studio</p></footer>
+
+<script src="js/main.js"></script>
+<script src="js/designer.js"></script>
+</body>
+</html>
