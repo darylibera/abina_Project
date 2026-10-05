@@ -82,6 +82,10 @@ npm install
 \`\`\`
 MONGO_URL=mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/abina?retryWrites=true&w=majority
 PORT=3000
+
+
+MONGO_URL=mongodb+srv://abinaadmin:0987654321@abinacluster.9l2i9ge.mongodb.net/abina?retryWrites=true&w=majority
+PORT=3000
 \`\`\`
 
 ### 4. Run
